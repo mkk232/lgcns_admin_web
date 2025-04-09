@@ -3,7 +3,6 @@ package com.lgcns.admin.simulation.general.controller;
 import com.lgcns.admin.common.utils.PageUtils;
 import com.lgcns.admin.common.utils.ParamUtils;
 import com.lgcns.admin.common.vo.ResponseMessageVO;
-import com.lgcns.admin.exception.QueryBuilderException;
 import com.lgcns.admin.simulation.general.service.SearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +39,7 @@ public class SearchController {
     public ResponseEntity<ResponseMessageVO> search(@RequestParam String searchKeyword,
                                                     @RequestParam String searchType,
                                                     @RequestParam int pageNo,
-                                                    @RequestParam int pageSize) throws QueryBuilderException {
+                                                    @RequestParam int pageSize) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("searchKeyword", searchKeyword);
         paramMap.put("searchFields", ParamUtils.getSearchType(searchType));

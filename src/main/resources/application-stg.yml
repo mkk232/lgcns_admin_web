@@ -58,3 +58,4 @@ admin.ui:
 
   search:
     max-rows: 5
+    url: http://122.199.202.101:9200/idx_email/_search

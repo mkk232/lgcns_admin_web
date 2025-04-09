@@ -1,8 +1,6 @@
 package com.lgcns.admin.common.builder;
 
 
-import com.lgcns.admin.exception.QueryBuilderException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +12,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
 	
     private Map<String, Object> queryMap = new HashMap<>();
 
-    public FullTextQueryBuilder multiMatch(String[] fields, String keyword, String operator, String type) throws QueryBuilderException {
+    public FullTextQueryBuilder multiMatch(String[] fields, String keyword, String operator, String type) {
         Map<String, Object> querySettingMap = new HashMap<>();
 
         querySettingMap.put("query", keyword);
@@ -32,7 +30,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
         return this;
     }
 
-    public FullTextQueryBuilder multiMatch(String[] fields, String keyword, String operator, String type, String matchType) throws QueryBuilderException {
+    public FullTextQueryBuilder multiMatch(String[] fields, String keyword, String operator, String type, String matchType) {
         Map<String, Object> querySettingMap = new HashMap<>();
 
         querySettingMap.put("query", keyword);
@@ -46,6 +44,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
             querySettingMap.put("type", type);
         }
 
+        // 검색된 키워드 추출
         if(matchType != null) {
             querySettingMap.put("_name", keyword + "_" + matchType);
         }
@@ -54,7 +53,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
         return this;
     }
 
-    public FullTextQueryBuilder multiMatchPhrase(String[] fields, String keyword, int boost, int slop, String type) throws QueryBuilderException {
+    public FullTextQueryBuilder multiMatchPhrase(String[] fields, String keyword, int boost, int slop, String type) {
         Map<String, Object> querySettingMap = new HashMap<>();
 
         querySettingMap.put("query", keyword);
@@ -80,7 +79,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
         return this;
     }
     
-    public FullTextQueryBuilder match(String field, String keyword, String operator) throws QueryBuilderException {
+    public FullTextQueryBuilder match(String field, String keyword, String operator) {
         Map<String, Object> fieldMap = new HashMap<>();
         Map<String, Object> querySettingMap = new HashMap<>();
 
@@ -92,7 +91,7 @@ public class FullTextQueryBuilder implements IQueryBuilder {
         return this;
     }
 
-    public FullTextQueryBuilder matchPhrase(String field, String keyword) throws QueryBuilderException {
+    public FullTextQueryBuilder matchPhrase(String field, String keyword) {
         Map<String, Object> querySettingMap = new HashMap<>();
         querySettingMap.put(field, keyword);
 

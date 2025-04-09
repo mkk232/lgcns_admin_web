@@ -6,7 +6,6 @@ import com.lgcns.admin.common.builder.FullTextQueryBuilder;
 import com.lgcns.admin.common.service.WebService;
 import com.lgcns.admin.common.utils.ConvertUtils;
 import com.lgcns.admin.common.utils.GsonUtils;
-import com.lgcns.admin.exception.QueryBuilderException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class SearchService {
         this.webService = webService;
     }
 
-    public Map<String, Object> search(Map<String, Object> paramMap) throws QueryBuilderException {
+    public Map<String, Object> search(Map<String, Object> paramMap) {
         String query = buildSearchQuery(paramMap);
         Map<String, Object> resultMap = this.webService.requestSearch(query);
 
@@ -38,7 +37,7 @@ public class SearchService {
     /**
      * 필터링 검색 쿼리 생성
      */
-    private String buildSearchQuery(Map<String, Object> paramMap) throws QueryBuilderException {
+    private String buildSearchQuery(Map<String, Object> paramMap) {
         // 검색 파라미터 추출
         String searchKeyword = (String) paramMap.get("searchKeyword");
         String[] searchFields = getSearchFields(paramMap);
