@@ -1,0 +1,60 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://122.199.202.101:3306/lgcns_admin?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
+    username: root
+    password: 'pass123#'
+
+mybatis:
+  mapper-locations: /mapper/**/*.xml
+
+webclient:
+  connection-timeout: 5000
+  max-connections: 100
+  max-idle-time: 60
+  max-life-time: 60
+  pending-acquire-timeout: 5000
+  pending-acquire-maxCount: -1
+  evict-in-background: 30
+  metrics: false
+  response-timeout: 3000
+  read-timeout: 10000
+  write-timeout: 3000
+  max-in-memory-size: 100
+
+# logback-spring.xml 파일에서 참조
+logging:
+  file:
+    path: C:\Workspace_lgcns\lgcns_admin_web\log
+    name: lgcns_admin_web
+  level:
+    root: INFO
+
+admin.ui:
+  interceptor:
+    ignore-urls:
+      /auth/*,
+      /js/**,
+      /css/**,
+      /fonts/*,
+      /image/*,
+      /error,
+      /favicon.ico,
+      /error/handling
+
+  page-urls:
+    - id: 10
+      url: /dictionary
+    - id: 20
+      url: /simulation/keyword
+      icon: bi-person-fill-gear
+    - id: 21
+      url: /simulation/general
+      icon: bi-window-stack
+
+  search:
+    max-rows: 5

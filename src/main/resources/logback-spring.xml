@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+    <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path"/>
+    <springProperty scope="context" name="LOG_FILE_NAME" source="logging.file.name"/>
+
+    <!-- 로그 파일이 저장될 경로 -->
+    <!--<property name="LOG_PATH" value="logging.file.path"/>-->
+
+    <!-- 로그 파일 이름 -->
+    <!--<property name="LOG_FILE_NAME" value="logging.file.name"/>-->
+
+    <!-- 로그 출력 패턴 -->
+    <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+    
+    <!-- 로그 레벨 -->
+    <!--
+    	1) ERROR : 오류 메시지 표시 
+        2) WARN  : 경고성 메시지 표시
+        3) INFO  : 정보성 메시지 표시
+        4) DEBUG : 디버깅하기 위한 메시지 표시
+        5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
+
+        아래에서는 info로 설정하였는데, 이 경우엔 INFO 보다 위에 있는 DEBUG와 TRACE는 표시하지 않는다.
+    -->
+
+    <!-- CONSOLE에 로그 출력 세팅 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                [%-5level]%d{yyyy-MM-dd HH:mm:ss.SSS}[%logger{0}:%line]- %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!-- File에 로그 출력 세팅 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+
+        <!--<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>365</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 로그 전역 세팅 -->
+    <root level="${LOG_LEVEL}">
+        <!-- 위에 설정한 콘솔 설정 추가 -->
+        <appender-ref ref="CONSOLE"/>
+
+        <!-- 위에 설정한 파일 설정 추가 -->
+        <appender-ref ref="FILE"/>
+        
+    </root>
+
+    <!-- API 로그 출력 시 DEBUG로 변경. -->
+    <logger name="com.lgcns.admin.common.config.WebConfig">
+        <level value="debug"/>
+    </logger>
+
+    <logger name="org.springframwork">
+	    <level value="debug"/>
+	</logger>
+    <logger name="org.springframework.web.reactive">
+	    <level value="info"/>
+	</logger>
+	<logger name="org.mybatis">
+	    <level value="error"/>
+	</logger>
+    <logger name="com.zaxxer.hikari">
+	    <level value="error"/>
+	</logger>
+    <logger name="org.mariadb.jdbc.message.server.ErrorPacket">
+	    <level value="error"/>
+	</logger>
+</configuration>
