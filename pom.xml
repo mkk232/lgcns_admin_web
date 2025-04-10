@@ -120,18 +120,14 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.2.0</version>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.2</version>
 				<configuration>
-					<resources>
-						<resource>
-							<directory>src/main/resources</directory>
-							<excludes>
-								<exclude>logback-spring.xml</exclude>
-								<exclude>application-*.yml</exclude>
-							</excludes>
-						</resource>
-					</resources>
+					<packagingExcludes>
+						<!-- 빌드 시 war 파일 내 해당 파일 제외 -->
+						WEB-INF/classes/logback-spring.xml,
+						WEB-INF/classes/application-*.yml
+					</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>

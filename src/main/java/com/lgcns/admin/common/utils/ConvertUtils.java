@@ -8,13 +8,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Slf4j
+@SuppressWarnings("unchecked")
 public class ConvertUtils {
     private ConvertUtils() {}
 
     /**
      * Total Count 설정, 필터링 키워드 추출, 하이라이트 텍스트 source로 이동
      */
-    @SuppressWarnings("unchecked")
+
     public static Map<String, Object> convert(Map<String, Object> resultMap, List<String> keywordList) {
         // total count 설정
         setTotalCount(resultMap);
@@ -42,7 +43,6 @@ public class ConvertUtils {
         return resultMap;
     }
 
-    @SuppressWarnings("unchecked")
     /**
      * 메일 본문, 첨부 본문 길이가 200자를 넘어가는 경우 ... 처리
      */
@@ -71,7 +71,6 @@ public class ConvertUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void setTotalCount(Map<String, Object> resultMap) {
         int count = 0;
         if(resultMap.containsKey("aggregations")) {
@@ -89,7 +88,6 @@ public class ConvertUtils {
         resultMap.put("totalCnt", count);
     }
 
-    @SuppressWarnings("unchecked")
     private static void getFilteringKeyword(Map<String, Object> hits) {
         Map<String, Object> sourceMap = (Map<String, Object>) hits.get("_source");
         boolean isMailType = "N".equals(sourceMap.get("attach_exist"));
@@ -120,7 +118,6 @@ public class ConvertUtils {
 
     // 필터링 키워드 추출 방식 변경으로 인해 미사용
     @Deprecated
-    @SuppressWarnings("unchecked")
     private static void getFilteringKeyword(Map<String, Object> hits, List<String> searchKeywords) {
         Set<String> keywordSet = new TreeSet<>();
         boolean isMailType;

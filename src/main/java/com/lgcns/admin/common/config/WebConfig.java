@@ -25,9 +25,6 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${admin.ui.interceptor.ignore-urls}")
-    private String[] ignoreUrls;
-
     @Value("${webclient.connection-timeout}")
     private int connectionTimeout;
 
