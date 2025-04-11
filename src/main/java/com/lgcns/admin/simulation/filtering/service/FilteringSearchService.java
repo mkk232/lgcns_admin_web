@@ -134,13 +134,14 @@ public class FilteringSearchService {
         DSLQueryBuilder dslQueryBuilder = new DSLQueryBuilder()
                 .builder()
                 .trackTotalHits(true)
-                .from(-1)
-                .size(-1)
+                .from(0)
+                .size(100)
                 .query(mainBoolQuery)
                 .highlight(searchFields, getHighlightOptions(isDetailSearch))
                 .source(getSourceIncludes(paramMap))
                 .build();
 
+        log.info("query: {}", dslQueryBuilder.buildJson());
         return dslQueryBuilder.buildJson();
     }
 
@@ -230,9 +231,9 @@ public class FilteringSearchService {
 
     private String[] getSourceIncludes(Map<String, Object> paramMap) {
         if (paramMap.containsKey("attachId")) {
-            return new String[]{"attach_id", "attach_name", "attach_exist", "attach_body"};
+            return new String[]{"attach_id", "attach_name", "attach_exist", "attach_body", "attachFile.File_DownloadLink"};
         }
-        return new String[]{"attach_id", "attach_name", "attach_exist", "subject", "em_body"};
+        return new String[]{"attach_id", "attach_name", "attach_exist", "subject", "em_body", "attachFile.File_DownloadLink"};
     }
 
     private String[] getSearchFields(Map<String, Object> paramMap) {

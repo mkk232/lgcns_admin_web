@@ -66,11 +66,11 @@
 
     <!-- API 로그 출력 시 DEBUG로 변경. -->
     <logger name="com.lgcns.admin.common.config.WebConfig">
-        <level value="debug"/>
+        <level value="info"/>
     </logger>
 
     <logger name="org.springframwork">
-	    <level value="debug"/>
+	    <level value="info"/>
 	</logger>
     <logger name="org.springframework.web.reactive">
 	    <level value="info"/>

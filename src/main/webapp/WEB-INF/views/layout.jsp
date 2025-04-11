@@ -67,7 +67,7 @@
 
         .sidebar .sidebar-body {
             position: sticky;
-            height: calc(100vh - 10rem);
+            height: auto;
             overflow-y: auto;
         }
 

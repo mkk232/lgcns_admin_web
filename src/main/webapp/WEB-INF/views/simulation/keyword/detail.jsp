@@ -25,6 +25,13 @@
             window.location.href='/simulation/filter/search.html';
         })
 
+        // 첨부파일 다운로드 이벤트
+        $('#doc-title').on('click', 'span#attach_download', function() {
+            let downloadLink = $(this).data('downloadLink');
+
+            window.location.href = downloadLink;
+        })
+
         // 첨부파일 목록 클릭 이벤트
         $('ul.list-group').on('click', 'li', function() {
             if($(this).hasClass('active')) {
@@ -135,9 +142,22 @@
                 $('<p>').html(body)
             )
 
-            targetTitle.append(
-                $('<h4>').html(title)
-            )
+            targetTitle
+                .append(
+                    $('<a />')
+                        .attr('href', source.downloadLink)
+                        .attr('target', '_blank')
+                        .css('color', 'black')
+                        .css('font-size', '1.2rem')
+                        .css('font-weight', 'bold')
+                        .css('text-decoration', 'underline')
+                        .css('cursor', 'pointer')
+                        .html(title)
+                )
+                .append(
+                    $('<i class="bi bi-download ms-3"></i>')
+                )
+
         }
 
         function drawFilteringKeyword(data) {
@@ -185,7 +205,7 @@
     <div class="row">
         <input type="hidden" id="mailId" value="${mailId}" />
         <!-- 문서 리스트 -->
-        <div class="col-md-3 border-end" style="height: calc(100vh - 10rem); overflow-y: auto;">
+        <div class="col-md-3 border-end" style="min-height: calc(100vh - 10rem); height: auto; overflow-y: auto;">
             <h6 class="mb-3">첨부파일 목록</h6>
             <ul class="list-group" id="document-list">
             </ul>
@@ -197,15 +217,15 @@
                 <p id="filteringKeyword" class="mb-3">필터링 키워드 :</p>
             </div>
             <div style="padding: .5rem;">
-                <h4 id="doc-title"></h4>
-                <p id="doc-content"></p>
+                <div id="doc-title" class="mb-3"></div>
+                <div id="doc-content"></div>
             </div>
         </div>
     </div>
 
     <div class="col-12 mt-3 btn-toolbar">
         <div class="btn-group me-3">
-            <button type="button" class="btn btn-primary" name="btnList">
+            <button type="button" class="btn btn-primary" name="btnList" style="">
                 <i class="bi bi-list-ul"></i> 목록
             </button>
         </div>

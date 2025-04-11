@@ -15,7 +15,6 @@ public class ConvertUtils {
     /**
      * Total Count 설정, 필터링 키워드 추출, 하이라이트 텍스트 source로 이동
      */
-
     public static Map<String, Object> convert(Map<String, Object> resultMap, List<String> keywordList) {
         // total count 설정
         setTotalCount(resultMap);
@@ -23,14 +22,17 @@ public class ConvertUtils {
         if(hitsMap != null && !hitsMap.isEmpty()) {
             List<Map<String, Object>> hitsList = (List<Map<String, Object>>) hitsMap.get("hits");
             for (Map<String, Object> hits : hitsList) {
-
                 // 필터링 키워드 추출
                 if(keywordList != null) {
-                    getFilteringKeyword(hits);
+                    extractFilteringKeyword(hits);
                 }
 
-                // 하이라이트 내용을 source로 이동
                 Map<String, Object> sourceMap = (Map<String, Object>) hits.get("_source");
+
+                // 다운로드 링크 추출
+                addDownloadLinkToSource(sourceMap);
+
+                // 하이라이트 내용을 source로 이동
                 if(hits.containsKey("highlight")) {
                     Map<String, Object> highlightMap = (Map<String, Object>) hits.get("highlight");
                     for(String fieldName : highlightMap.keySet()) {
@@ -88,7 +90,7 @@ public class ConvertUtils {
         resultMap.put("totalCnt", count);
     }
 
-    private static void getFilteringKeyword(Map<String, Object> hits) {
+    private static void extractFilteringKeyword(Map<String, Object> hits) {
         Map<String, Object> sourceMap = (Map<String, Object>) hits.get("_source");
         boolean isMailType = "N".equals(sourceMap.get("attach_exist"));
         boolean isMail;
@@ -118,7 +120,7 @@ public class ConvertUtils {
 
     // 필터링 키워드 추출 방식 변경으로 인해 미사용
     @Deprecated
-    private static void getFilteringKeyword(Map<String, Object> hits, List<String> searchKeywords) {
+    private static void extractFilteringKeyword(Map<String, Object> hits, List<String> searchKeywords) {
         Set<String> keywordSet = new TreeSet<>();
         boolean isMailType;
         Map<String, Object> sourceMap = (Map<String, Object>) hits.get("_source");
@@ -159,7 +161,13 @@ public class ConvertUtils {
         }
     }
 
-    public static void main(String[] args) {
+    private static void addDownloadLinkToSource(Map<String, Object> sourceMap) {
+        Map<String, Object> attachMap = (Map<String, Object>) sourceMap.get("attachFile");
+        String downloadLink = null;
+        if(attachMap != null) {
+            downloadLink = (String) attachMap.get("File_DownloadLink");
+        }
 
+        sourceMap.put("downloadLink", downloadLink);
     }
 }
