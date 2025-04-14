@@ -139,6 +139,7 @@ public class FilteringSearchService {
                 .query(mainBoolQuery)
                 .highlight(searchFields, getHighlightOptions(isDetailSearch))
                 .source(getSourceIncludes(paramMap))
+//                .sort("attach_exist.keyword:ASC", ",", ":")
                 .build();
 
         log.info("query: {}", dslQueryBuilder.buildJson());
@@ -152,7 +153,7 @@ public class FilteringSearchService {
             mainBoolQuery.must(termQuery);
         }
 
-        if (paramMap.containsKey("attachId")) {
+        if (paramMap.containsKey("attachId") && paramMap.get("attachId") != null) { // 첨부파일 클릭 시 조건 추가
             TermQueryBuilder termQuery = new TermQueryBuilder()
                     .term("attach_id.keyword", (String) paramMap.get("attachId"));
             mainBoolQuery.must(termQuery);

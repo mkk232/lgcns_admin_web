@@ -50,8 +50,6 @@
             if (attachId !== 'em_body') {
                 // 메일 본문이 아닌 경우
                 params.attachId = attachId;
-            } else {
-                params.attachId = "";
             }
 
             let encodedParam = new URLSearchParams(params);
@@ -124,40 +122,54 @@
         }
 
         function drawContents(data) {
+            let activeTabId = $('ul.list-group').find('li.active').data('attach-id');
+            let targetContents = $('#doc-content').empty();
+            let targetTitle = $('#doc-title').empty();
+
             // 데이터가 없을 경우
             if(data.hits.hits.length === 0) {
                 return;
             }
 
-            let currentLiId = $('ul.list-group').find('li.active').data('attach-id');
-            let targetContents = $('#doc-content').empty();
-            let targetTitle = $('#doc-title').empty();
+            let source;
+            let title;
+            let body;
+            $.each(data.hits.hits, function(index, hits) {
+                source = hits._source;
 
-            let source = data.hits.hits[0]._source;
-            let title = currentLiId === source.attach_id && source.attach_exist === 'Y' ? source.attach_name : source.subject;
-            let body = currentLiId === source.attach_id && source.attach_exist === 'Y' ? source.attach_body : source.em_body;
+                // 본문
+                if(activeTabId === 'em_body' && source.attach_exist === 'N') {
+                    title = source.subject;
+                    body = source.em_body;
+                    return false; // break;
+                }
 
-            // 메일 본문 우선 출력
+                // 첨부
+                if(activeTabId === source.attach_id) {
+                    title = source.attach_name;
+                    body = source.attach_body;
+                    return false; // break;
+                }
+            })
+
+            let titleTag = $('<a style="font-size: 1.2rem; font-weight: bold;" />').html(title);
+            if(source.downloadLink != null) {
+                titleTag
+                    .attr('href', source.downloadLink)
+                    .attr('target', '_blank')
+                    .css('color', 'black')
+                    .css('text-decoration', 'underline')
+                    .css('cursor', 'pointer')
+                    .append(
+                        $('<i class="bi bi-download ms-3" />')
+                    )
+            }
+
+            targetTitle.append(titleTag);
+
             targetContents.append(
                 $('<p>').html(body)
             )
-
-            targetTitle
-                .append(
-                    $('<a />')
-                        .attr('href', source.downloadLink)
-                        .attr('target', '_blank')
-                        .css('color', 'black')
-                        .css('font-size', '1.2rem')
-                        .css('font-weight', 'bold')
-                        .css('text-decoration', 'underline')
-                        .css('cursor', 'pointer')
-                        .html(title)
-                )
-                .append(
-                    $('<i class="bi bi-download ms-3"></i>')
-                )
-
         }
 
         function drawFilteringKeyword(data) {
@@ -165,23 +177,18 @@
             target.empty();
 
             // 현재 active된 li의 data-attach-id
-            let currentAttachId = $('ul.list-group li.active').data('attach-id');
+            let activeTabId = $('ul.list-group li.active').data('attach-id');
             let hitMatch = null;
 
+            let source;
             if(data.hits.hits.length > 0) {
-                $.each(data.hits.hits, function (index, hit) {
-                    if(hit._source.attach_exist === 'Y') {
-                        // 첨부
-                        // 현재 선택된 첨부파일의 본문을 찾는다.
-                        if (hit._source.attach_id === currentAttachId) {
-                            hitMatch = hit;
-                            return false; // 일치 항목이 발견되면 루프 종료
-                        }
-                    } else {
-                        // 본문
-                        hitMatch = null;
+                $.each(data.hits.hits, function (index, hits) {
+                    source = hits._source;
+                    if(activeTabId === source.attach_id && source.attach_exist === 'Y') {
+                        // 현재 선택된 첨부파일의 hits를 찾는다.
+                        hitMatch = hits;
+                        return false; // break;
                     }
-
                 });
 
                 if (hitMatch) {
@@ -189,10 +196,10 @@
                     target.text('필터링 키워드 : ' + hitMatch.filteringKeywords.join(', '));
                 } else {
                     // 본문
-                    $.each(data.hits.hits, function (index, hit) {
-                        if (hit._source.attach_exist === 'N') {
-                            target.text('필터링 키워드 : ' + hit.filteringKeywords.join(', '));
-                            return false; // 일치 항목이 발견되면 루프 종료
+                    $.each(data.hits.hits, function (index, hits) {
+                        if (hits._source.attach_exist === 'N') { // 본문 데이터 찾기
+                            target.text('필터링 키워드 : ' + hits.filteringKeywords.join(', '));
+                            return false; // break;
                         }
                     });
                 }

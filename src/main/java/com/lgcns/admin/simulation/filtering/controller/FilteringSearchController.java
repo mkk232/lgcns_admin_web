@@ -81,7 +81,7 @@ public class FilteringSearchController {
      */
     @GetMapping("/simulation/filter/search/detail")
     public ResponseEntity<ResponseMessageVO> getSearchDetail(@RequestParam String mailId,
-                                        @RequestParam String attachId) throws QueryBuilderException {
+                                        @RequestParam(required = false) String attachId) throws QueryBuilderException {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("mailId", mailId);
         paramMap.put("attachId", attachId);
