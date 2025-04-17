@@ -32,7 +32,7 @@ logging:
     path: C:\Workspace_lgcns\lgcns_admin_web\log
     name: lgcns_admin_web
   level:
-    root: INFO
+    root: info
 
 admin.ui:
   interceptor:

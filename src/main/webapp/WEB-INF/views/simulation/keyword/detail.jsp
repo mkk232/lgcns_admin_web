@@ -54,6 +54,7 @@
 
             let encodedParam = new URLSearchParams(params);
 
+            console.log(encodedParam.toString())
             let callUrl = '/simulation/filter/search/detail?' + encodedParam.toString();
             callAjax(callUrl, 'GET', null,
                 function(data) {
@@ -153,7 +154,7 @@
             })
 
             let titleTag = $('<a style="font-size: 1.2rem; font-weight: bold;" />').html(title);
-            if(source.downloadLink != null) {
+            if(source.downloadLink) {
                 titleTag
                     .attr('href', source.downloadLink)
                     .attr('target', '_blank')

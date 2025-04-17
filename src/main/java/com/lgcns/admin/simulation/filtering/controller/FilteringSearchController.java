@@ -84,7 +84,9 @@ public class FilteringSearchController {
                                         @RequestParam(required = false) String attachId) throws QueryBuilderException {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("mailId", mailId);
-        paramMap.put("attachId", attachId);
+        if(attachId != null) {
+            paramMap.put("attachId", attachId);
+        }
 
         Map<String, Object> resultMap = this.filteringSearchService.searchDetail(paramMap);
 

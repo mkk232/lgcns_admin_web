@@ -46,7 +46,6 @@ public class FilteringSearchService {
     public Map<String, Object> searchDetail(Map<String, Object> paramMap) throws QueryBuilderException {
         List<String> keywordList = this.keywordService.getAllKeywordList();
         paramMap.put("searchKeyword", keywordList);
-//        paramMap.put("searchKeyword", String.join(" ", keywordList));
 
         String query = this.buildDetailSearchQuery(paramMap);
         Map<String, Object> resultMap = this.webService.requestSearch(query);
@@ -142,7 +141,7 @@ public class FilteringSearchService {
 //                .sort("attach_exist.keyword:ASC", ",", ":")
                 .build();
 
-        log.info("query: {}", dslQueryBuilder.buildJson());
+        log.debug("query: {}", dslQueryBuilder.buildJson());
         return dslQueryBuilder.buildJson();
     }
 
@@ -153,7 +152,7 @@ public class FilteringSearchService {
             mainBoolQuery.must(termQuery);
         }
 
-        if (paramMap.containsKey("attachId") && paramMap.get("attachId") != null) { // 첨부파일 클릭 시 조건 추가
+        if (paramMap.containsKey("attachId")) { // 첨부파일 클릭 시 조건 추가
             TermQueryBuilder termQuery = new TermQueryBuilder()
                     .term("attach_id.keyword", (String) paramMap.get("attachId"));
             mainBoolQuery.must(termQuery);
@@ -234,6 +233,7 @@ public class FilteringSearchService {
         if (paramMap.containsKey("attachId")) {
             return new String[]{"attach_id", "attach_name", "attach_exist", "attach_body", "attachFile.File_DownloadLink"};
         }
+
         return new String[]{"attach_id", "attach_name", "attach_exist", "subject", "em_body", "attachFile.File_DownloadLink"};
     }
 
