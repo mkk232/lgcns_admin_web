@@ -209,7 +209,7 @@
     })
 
 </script>
-<div  class="vstack gap-3 m-3">
+<div  class="vstack gap-2 m-3">
     <div class="row">
         <input type="hidden" id="mailId" value="${mailId}" />
         <!-- 문서 리스트 -->

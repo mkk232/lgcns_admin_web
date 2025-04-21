@@ -151,7 +151,7 @@
     </div>
 </div>
 
-<div class="vstack gap-3 m-3">
+<div class="vstack gap-2 m-3">
     <div class="mt-2">
         <h4 class="fw-bold">
             <i class="bi bi-envelope-at"></i>
