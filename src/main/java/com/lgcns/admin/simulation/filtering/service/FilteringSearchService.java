@@ -138,7 +138,7 @@ public class FilteringSearchService {
                 .query(mainBoolQuery)
                 .highlight(searchFields, getHighlightOptions(isDetailSearch))
                 .source(getSourceIncludes(paramMap))
-//                .sort("attach_exist.keyword:ASC", ",", ":")
+                .sort("attach_exist.keyword:ASC, attach_name.keyword:ASC", ",", ":")
                 .build();
 
         log.debug("query: {}", dslQueryBuilder.buildJson());

@@ -169,7 +169,7 @@
             targetTitle.append(titleTag);
 
             targetContents.append(
-                $('<p>').html(body)
+                $('<p style="word-wrap: break-word;">').html(body)
             )
         }
 
